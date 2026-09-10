@@ -1,0 +1,344 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------
+   Semantic tokens — flip with the theme, consumed by Tailwind below
+----------------------------------------------------------------*/
+:root {
+  --bg: #faf7f2;
+  --bg-2: #f2ece3;
+  --elev: #ffffff;
+  --ink: #17130f;
+  --soft: #574e45;
+  --mute: #8d8175;
+  --line: rgba(23, 19, 15, 0.12);
+  --line-strong: rgba(23, 19, 15, 0.22);
+  --glass: rgba(255, 255, 255, 0.62);
+  --glow: rgba(124, 92, 255, 0.22);
+  --shadow-sm: 0 8px 30px -18px rgba(23, 19, 15, 0.4);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0a0908;
+  --bg-2: #100e0c;
+  --elev: #16130f;
+  --ink: #f7f2ea;
+  --soft: #bcb1a3;
+  --mute: #82776a;
+  --line: rgba(247, 242, 234, 0.12);
+  --line-strong: rgba(247, 242, 234, 0.26);
+  --glass: rgba(22, 19, 15, 0.6);
+  --glow: rgba(124, 92, 255, 0.35);
+  --shadow-sm: 0 10px 34px -20px rgba(0, 0, 0, 0.9);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-display: "Fraunces", "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg-2);
+  --color-elev: var(--elev);
+  --color-ink: var(--ink);
+  --color-soft: var(--soft);
+  --color-mute: var(--mute);
+  --color-line: var(--line);
+  --color-line2: var(--line-strong);
+  --color-glass: var(--glass);
+
+  --color-brand: #7c5cff;
+  --color-brand2: #a78bfa;
+  --color-rose: #ff5c8a;
+  --color-amber: #ffb56b;
+  --color-gold: #c9a227;
+  --color-jade: #2fbf9b;
+}
+
+/* --------------------------------- base --------------------------------- */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #7c5cff;
+  color: #fff;
+}
+
+/* Inner panels get a discreet scrollbar… */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mute);
+}
+
+/* …the page itself gets the brand gradient. */
+html::-webkit-scrollbar {
+  width: 10px;
+}
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c5cff, #ff5c8a);
+  border: 3px solid var(--bg);
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* ------------------------------ components ------------------------------ */
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-10;
+  }
+
+  .text-gradient {
+    background: linear-gradient(110deg, #7c5cff 0%, #ff5c8a 48%, #ffb56b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--line);
+  }
+
+  .card {
+    background: var(--elev);
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+  }
+
+  .btn {
+    @apply relative inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold tracking-wide transition-all duration-300;
+  }
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background: linear-gradient(110deg, #7c5cff, #ff5c8a 55%, #ffb56b 130%);
+    background-size: 200% 100%;
+    box-shadow: 0 12px 32px -12px var(--glow);
+  }
+  .btn-primary:hover {
+    background-position: 100% 0;
+    box-shadow: 0 18px 44px -14px var(--glow);
+    transform: translateY(-2px);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-ink {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .btn-ink:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-ghost {
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+  }
+  .btn-ghost:hover {
+    background: var(--ink);
+    color: var(--bg);
+    transform: translateY(-2px);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-300;
+    border: 1px solid var(--line);
+    color: var(--soft);
+  }
+  .chip:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+  .chip-active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  .field {
+    @apply w-full rounded-xl px-4 py-3 text-sm outline-none transition-all duration-300;
+    background: color-mix(in srgb, var(--ink) 4%, transparent);
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  .field::placeholder {
+    color: var(--mute);
+  }
+  .field:focus {
+    border-color: #7c5cff;
+    box-shadow: 0 0 0 4px color-mix(in srgb, #7c5cff 18%, transparent);
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.28em];
+    color: var(--mute);
+  }
+
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 1.5px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ------------------------------- utilities ------------------------------ */
+@layer utilities {
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 65%, transparent 100%);
+  }
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .perspective {
+    perspective: 1200px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .aurora {
+    background:
+      radial-gradient(60% 55% at 15% 20%, rgba(124, 92, 255, 0.5), transparent 60%),
+      radial-gradient(55% 50% at 85% 25%, rgba(255, 92, 138, 0.45), transparent 62%),
+      radial-gradient(60% 60% at 50% 95%, rgba(255, 181, 107, 0.4), transparent 65%);
+    filter: blur(46px);
+    animation: aurora 18s ease-in-out infinite alternate;
+  }
+
+  .shimmer {
+    background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+    background-size: 220% 100%;
+    animation: shimmer 2.4s linear infinite;
+  }
+
+  .anim-float {
+    animation: float 7s ease-in-out infinite;
+  }
+  .anim-spin-slow {
+    animation: spin-slow 22s linear infinite;
+  }
+}
+
+@keyframes aurora {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.12) rotate(6deg);
+  }
+  100% {
+    transform: translate3d(-3%, 3%, 0) scale(1.05) rotate(-5deg);
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -220% 0;
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee var(--speed, 28s) linear infinite;
+}
+.marquee-paused:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide the native cursor only while our custom one is live. */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor,
+  body.custom-cursor * {
+    cursor: none !important;
+  }
+}
